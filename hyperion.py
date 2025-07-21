@@ -953,6 +953,7 @@ def stage(text: str, symbol: str = '...', col1 = light, col2 = None) -> str:
     return f""" {Col.Symbol(symbol, col1, dark)} {col2}{text}{Col.reset}"""
 
 
+# ...existing code...
 def main():
     System.Size(150, 47)
     System.Title("Hyperion")
@@ -963,7 +964,6 @@ def main():
     file = input(stage(f"Drag the file you want to obfuscate {dark}-> {Col.reset}", "?", col2 = bpurple)).replace('"','').replace("'","")
     print('\n')
 
-
     try:
         with open(file, mode='rb') as f:
             script = f.read().decode('utf-8')
@@ -972,10 +972,10 @@ def main():
         input(f" {Col.Symbol('!', light, dark)} {Col.light_red}Invalid file!{Col.reset}")
         exit()
 
-    skiprenaming = input(stage(f"Skip the renaming of libraries and variables {dark}[{light}y{dark}/{light}n{dark}] -> {Col.reset}", "?")).replace('"','').replace("'","") == 'y'
-    print()
-    skipchunks = input(stage(f"Skip the protection of chunks {dark}[{light}y{dark}/{light}n{dark}] -> {Col.reset}", "?")).replace('"','').replace("'","") == 'y'
-    # camouflate = input(stage(f"Camouflate the final code to make it less suspicious {dark}[{light}y{dark}/{light}n{dark}] {Col.reset}", "?")).replace('"','').replace("'","") == 'y'
+    # 直接默认输入 n，不需要交互
+    skiprenaming = False
+    skipchunks = False
+    # camouflate = False  # 如果有 camouflate 交互也可直接赋值
 
     renvars, renlibs = (False, False) if skiprenaming else (True, True)
     randlines, shell = (False, False) if skipchunks else (True, True)
@@ -993,8 +993,6 @@ def main():
     print('\n')
     getpass(stage(f"Obfuscation completed succesfully in {light}{now}s{bpurple}.{Col.reset}", "?", col2 = bpurple))
     # dire aussi l ancienne et nouvelle taille du fichier
-
-
 
 if __name__ == '__main__':
     main()
