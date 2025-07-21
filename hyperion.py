@@ -14,7 +14,7 @@ from random import choice, shuffle, randint
 from zlib import compress
 
 
-
+import os
 
 
 class Hyperion:
@@ -979,7 +979,8 @@ def main():
     Hype = Hyperion(content=script, renvars=renvars, renlibs=renlibs, randlines=randlines, shell=shell)
     script = Hype.content
     now = round(time() - now, 2)
-
+    
+    filename = os.path.basename(file)
     with open(f'obf-{filename}', mode='w') as f:
         f.write(script)
 
