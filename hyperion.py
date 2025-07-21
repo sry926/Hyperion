@@ -953,46 +953,38 @@ def stage(text: str, symbol: str = '...', col1 = light, col2 = None) -> str:
     return f""" {Col.Symbol(symbol, col1, dark)} {col2}{text}{Col.reset}"""
 
 
-# ...existing code...
+import sys
+
 def main():
-    System.Size(150, 47)
-    System.Title("Hyperion")
-    Cursor.HideCursor()
-    print()
-    print(Colorate.Diagonal(Colors.DynamicMIX((purple, dark)), Center.XCenter(banner)))
-    print('\n')
-    file = input(stage(f"Drag the file you want to obfuscate {dark}-> {Col.reset}", "?", col2 = bpurple)).replace('"','').replace("'","")
-    print('\n')
+    # 如果有命令行参数，直接用第一个参数作为文件路径
+    if len(sys.argv) > 1:
+        file = sys.argv[1]
+    else:
+        print("Usage: python hyperion.py <file_path>")
+        sys.exit(1)
 
     try:
         with open(file, mode='rb') as f:
             script = f.read().decode('utf-8')
         filename = file.split('\\')[-1]
     except:
-        input(f" {Col.Symbol('!', light, dark)} {Col.light_red}Invalid file!{Col.reset}")
-        exit()
+        print("Invalid file!")
+        sys.exit(1)
 
-    # 直接默认输入 n，不需要交互
-    skiprenaming = False
-    skipchunks = False
-    # camouflate = False  # 如果有 camouflate 交互也可直接赋值
-
-    renvars, renlibs = (False, False) if skiprenaming else (True, True)
-    randlines, shell = (False, False) if skipchunks else (True, True)
-
-    print('\n')
+    # 自动设置所有参数，无需交互
+    renvars, renlibs = True, True
+    randlines, shell = True, True
 
     now = time()
-    Hype = Hyperion(content=script, renvars = renvars, renlibs = renlibs, randlines = randlines, shell = shell)
+    Hype = Hyperion(content=script, renvars=renvars, renlibs=renlibs, randlines=randlines, shell=shell)
     script = Hype.content
     now = round(time() - now, 2)
 
     with open(f'obf-{filename}', mode='w') as f:
         f.write(script)
-    
-    print('\n')
-    getpass(stage(f"Obfuscation completed succesfully in {light}{now}s{bpurple}.{Col.reset}", "?", col2 = bpurple))
-    # dire aussi l ancienne et nouvelle taille du fichier
+
+    print(f"Obfuscation completed successfully in {now}s.")
 
 if __name__ == '__main__':
     main()
+# ...existing code...
